@@ -947,6 +947,597 @@
             object-fit: cover;
             z-index: 1;
         }
+
+        /* ── Shared Section Utilities ── */
+        .section-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 0.75rem;
+        }
+
+        .section-heading {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--off-white) 0%, var(--teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        /* ── Featured Inventory ── */
+        .featured-section {
+            padding: 7rem 2rem;
+            background: linear-gradient(to bottom, #0d1f1f 0%, #000 100%);
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .car-card {
+            background: rgba(8, 8, 8, 0.95);
+            border: 1px solid rgba(74, 155, 155, 0.18);
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                        border-color 0.3s ease,
+                        box-shadow 0.4s ease;
+            cursor: pointer;
+        }
+
+        .car-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(74, 155, 155, 0.55);
+            box-shadow: 0 24px 60px rgba(74, 155, 155, 0.12);
+        }
+
+        .car-card-image {
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .car-card-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.65) 100%);
+        }
+
+        .car-badge {
+            position: absolute;
+            top: 1rem;
+            left: 0;
+            background: linear-gradient(135deg, var(--burnt-orange), var(--orange));
+            color: var(--off-white);
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            padding: 0.28rem 0.85rem;
+            text-transform: uppercase;
+            z-index: 1;
+        }
+
+        .car-year-tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--teal);
+            letter-spacing: 0.15em;
+            z-index: 1;
+            background: rgba(74, 155, 155, 0.12);
+            border: 1px solid rgba(74, 155, 155, 0.28);
+            padding: 0.2rem 0.55rem;
+        }
+
+        .car-card-body {
+            padding: 1.5rem;
+        }
+
+        .car-brand-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.38em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 0.3rem;
+        }
+
+        .car-model-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--off-white);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .car-specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .spec-chip {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 400;
+            color: rgba(245, 243, 237, 0.6);
+            background: rgba(74, 155, 155, 0.08);
+            border: 1px solid rgba(74, 155, 155, 0.18);
+            padding: 0.22rem 0.55rem;
+            white-space: nowrap;
+        }
+
+        .car-divider {
+            width: 100%;
+            height: 1px;
+            background: rgba(74, 155, 155, 0.12);
+            margin-bottom: 1.25rem;
+        }
+
+        .car-footer-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .price-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.58rem;
+            color: rgba(245, 243, 237, 0.3);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.15rem;
+        }
+
+        .price-value {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--orange);
+            letter-spacing: 0.03em;
+            line-height: 1;
+        }
+
+        .car-cta-link {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--teal);
+            text-decoration: none;
+            border: 1px solid rgba(74, 155, 155, 0.38);
+            padding: 0.55rem 1rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .car-cta-link:hover {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: var(--black);
+        }
+
+        /* ── Competitive Pricing ── */
+        .pricing-section {
+            position: relative;
+            padding: 10rem 2rem;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .pricing-bg {
+            position: absolute;
+            inset: 0;
+            background: url('cinematic-frames/ezgif-frame-120.jpg') center / cover no-repeat;
+            filter: brightness(0.2) saturate(0.7);
+            z-index: 0;
+        }
+
+        .pricing-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(43, 95, 95, 0.55) 0%, rgba(10, 10, 10, 0.88) 100%);
+            z-index: 1;
+        }
+
+        .pricing-content {
+            position: relative;
+            z-index: 2;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .pricing-content .section-heading {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+        }
+
+        .pricing-body-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(0.95rem, 2vw, 1.2rem);
+            font-weight: 300;
+            color: rgba(245, 243, 237, 0.78);
+            line-height: 1.85;
+            max-width: 580px;
+            margin: 0 auto 3.5rem;
+        }
+
+        .pricing-stats {
+            display: flex;
+            justify-content: center;
+            gap: 5rem;
+            margin-bottom: 3.5rem;
+            flex-wrap: wrap;
+        }
+
+        .pricing-stat-num {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--orange) 0%, var(--teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 0.4rem;
+        }
+
+        .pricing-stat-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 300;
+            color: rgba(245, 243, 237, 0.45);
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+        }
+
+        /* ── Meet Us In Person ── */
+        .locations-section {
+            padding: 7rem 2rem;
+            background: linear-gradient(to bottom, #000 0%, #0d1f1f 60%, #000 100%);
+        }
+
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .location-card {
+            background: rgba(8, 8, 8, 0.9);
+            border: 1px solid rgba(74, 155, 155, 0.2);
+            border-left: 3px solid var(--teal);
+            padding: 2rem;
+            transition: border-color 0.3s ease,
+                        transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.4s ease;
+        }
+
+        .location-card:hover {
+            border-color: rgba(217, 136, 65, 0.35);
+            border-left-color: var(--orange);
+            transform: translateY(-5px);
+            box-shadow: 0 18px 45px rgba(217, 136, 65, 0.1);
+        }
+
+        .location-pin-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(74, 155, 155, 0.1);
+            border: 1px solid rgba(74, 155, 155, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            font-size: 1.1rem;
+        }
+
+        .location-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--off-white);
+            text-transform: uppercase;
+            margin-bottom: 0.35rem;
+        }
+
+        .location-area-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 400;
+            color: var(--orange);
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            margin-bottom: 0.9rem;
+        }
+
+        .location-address {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: rgba(245, 243, 237, 0.6);
+            line-height: 1.65;
+            margin-bottom: 1rem;
+        }
+
+        .location-hours {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            color: rgba(245, 243, 237, 0.4);
+            letter-spacing: 0.04em;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .location-map-btn {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--teal);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            border-bottom: 1px solid rgba(74, 155, 155, 0.28);
+            padding-bottom: 3px;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .location-map-btn:hover {
+            color: var(--orange);
+            border-color: rgba(217, 136, 65, 0.4);
+        }
+
+        /* ── Footer ── */
+        .site-footer {
+            background: #050505;
+            border-top: 1px solid rgba(74, 155, 155, 0.15);
+            padding: 5rem 2rem 2rem;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-brand-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            background: linear-gradient(135deg, var(--off-white) 0%, var(--teal) 60%, var(--off-white) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: chromeShine 4s linear infinite;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .footer-brand-sub {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.52rem;
+            font-weight: 300;
+            letter-spacing: 0.45em;
+            color: var(--orange);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-brand-desc {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.83rem;
+            font-weight: 300;
+            color: rgba(245, 243, 237, 0.42);
+            line-height: 1.78;
+            max-width: 280px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(74, 155, 155, 0.22);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(245, 243, 237, 0.45);
+            text-decoration: none;
+            font-size: 0.62rem;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            border-color: var(--teal);
+            color: var(--teal);
+            background: rgba(74, 155, 155, 0.1);
+        }
+
+        .footer-col-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.76rem;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--off-white);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(74, 155, 155, 0.14);
+        }
+
+        .footer-link-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.82rem;
+        }
+
+        .footer-link-list li a,
+        .footer-link-list li span {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 300;
+            color: rgba(245, 243, 237, 0.48);
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.55rem;
+            line-height: 1.5;
+        }
+
+        .footer-link-list li a:hover {
+            color: var(--orange);
+        }
+
+        .f-icon {
+            color: var(--teal);
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .footer-bottom-bar {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(74, 155, 155, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-copyright {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 300;
+            color: rgba(245, 243, 237, 0.22);
+            letter-spacing: 0.08em;
+        }
+
+        .footer-tagline-bottom {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.66rem;
+            font-weight: 400;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(74, 155, 155, 0.32);
+        }
+
+        /* ── Responsive: New Sections ── */
+        @media (max-width: 1100px) {
+            .featured-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .featured-section,
+            .locations-section {
+                padding: 5rem 1.5rem;
+            }
+
+            .pricing-section {
+                padding: 7rem 1.5rem;
+            }
+
+            .featured-grid {
+                grid-template-columns: 1fr;
+                max-width: 460px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .locations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-stats {
+                gap: 2.5rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .footer-bottom-bar {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-brand-desc {
+                max-width: 100%;
+            }
+
+            .site-footer {
+                padding: 4rem 1.5rem 2rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1067,12 +1658,248 @@
         </video>
     </div> -->
 
-    <!-- Next Section -->
-    <div class="next-section">
-        <h2>Featured Collection</h2>
-        <div class="chrome-line"></div>
-        <p>Experience luxury redefined. From Mercedes-Benz to BMW, Range Rover to Lexus – discover automotive excellence.</p>
-    </div>
+    <!-- ─── Featured Inventory ─── -->
+    <section class="featured-section">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">Hot Listings</p>
+                <h2 class="section-heading">Featured Inventory</h2>
+                <div class="chrome-line"></div>
+            </div>
+            <div class="featured-grid">
+
+                <div class="car-card">
+                    <div class="car-card-image" style="background-image: url('cinematic-frames/ezgif-frame-001.jpg');">
+                        <span class="car-badge">HOT</span>
+                        <span class="car-year-tag">2024</span>
+                    </div>
+                    <div class="car-card-body">
+                        <p class="car-brand-label">Mercedes-Benz</p>
+                        <h3 class="car-model-name">G63 AMG</h3>
+                        <div class="car-specs">
+                            <span class="spec-chip">4.0L V8 Biturbo</span>
+                            <span class="spec-chip">585 HP</span>
+                            <span class="spec-chip">4,640mm</span>
+                            <span class="spec-chip">AWD</span>
+                        </div>
+                        <div class="car-divider"></div>
+                        <div class="car-footer-row">
+                            <div>
+                                <span class="price-label">Starting From</span>
+                                <span class="price-value">₦185M</span>
+                            </div>
+                            <a href="#" class="car-cta-link">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="car-card">
+                    <div class="car-card-image" style="background-image: url('cinematic-frames/ezgif-frame-060.jpg');">
+                        <span class="car-badge">PREMIUM</span>
+                        <span class="car-year-tag">2024</span>
+                    </div>
+                    <div class="car-card-body">
+                        <p class="car-brand-label">Land Rover</p>
+                        <h3 class="car-model-name">Range Rover Autobiography</h3>
+                        <div class="car-specs">
+                            <span class="spec-chip">4.4L V8 Petrol</span>
+                            <span class="spec-chip">530 HP</span>
+                            <span class="spec-chip">5,052mm</span>
+                            <span class="spec-chip">AWD</span>
+                        </div>
+                        <div class="car-divider"></div>
+                        <div class="car-footer-row">
+                            <div>
+                                <span class="price-label">Starting From</span>
+                                <span class="price-value">₦165M</span>
+                            </div>
+                            <a href="#" class="car-cta-link">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="car-card">
+                    <div class="car-card-image" style="background-image: url('cinematic-frames/ezgif-frame-140.jpg');">
+                        <span class="car-badge">NEW</span>
+                        <span class="car-year-tag">2023</span>
+                    </div>
+                    <div class="car-card-body">
+                        <p class="car-brand-label">BMW</p>
+                        <h3 class="car-model-name">X7 M60i</h3>
+                        <div class="car-specs">
+                            <span class="spec-chip">4.4L V8</span>
+                            <span class="spec-chip">530 HP</span>
+                            <span class="spec-chip">5,164mm</span>
+                            <span class="spec-chip">xDrive</span>
+                        </div>
+                        <div class="car-divider"></div>
+                        <div class="car-footer-row">
+                            <div>
+                                <span class="price-label">Starting From</span>
+                                <span class="price-value">₦135M</span>
+                            </div>
+                            <a href="#" class="car-cta-link">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="car-card">
+                    <div class="car-card-image" style="background-image: url('cinematic-frames/ezgif-frame-210.jpg');">
+                        <span class="car-badge">LUXURY</span>
+                        <span class="car-year-tag">2024</span>
+                    </div>
+                    <div class="car-card-body">
+                        <p class="car-brand-label">Lexus</p>
+                        <h3 class="car-model-name">LX 600 F Sport</h3>
+                        <div class="car-specs">
+                            <span class="spec-chip">3.5L V6 Biturbo</span>
+                            <span class="spec-chip">409 HP</span>
+                            <span class="spec-chip">5,100mm</span>
+                            <span class="spec-chip">4WD</span>
+                        </div>
+                        <div class="car-divider"></div>
+                        <div class="car-footer-row">
+                            <div>
+                                <span class="price-label">Starting From</span>
+                                <span class="price-value">₦95M</span>
+                            </div>
+                            <a href="#" class="car-cta-link">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Competitive Pricing ─── -->
+    <section class="pricing-section">
+        <div class="pricing-bg"></div>
+        <div class="pricing-overlay"></div>
+        <div class="pricing-content">
+            <p class="section-label">Why Choose Us</p>
+            <h2 class="section-heading">Competitive Pricing</h2>
+            <div class="chrome-line"></div>
+            <p class="pricing-body-text">Through our extensive network, Crispdal Autohub delivers highly competitive prices on every premium vehicle — so you drive luxury at the best value in the market.</p>
+            <div class="pricing-stats">
+                <div>
+                    <div class="pricing-stat-num">500+</div>
+                    <div class="pricing-stat-label">Vehicles Sold</div>
+                </div>
+                <div>
+                    <div class="pricing-stat-num">100%</div>
+                    <div class="pricing-stat-label">Verified Stock</div>
+                </div>
+                <div>
+                    <div class="pricing-stat-num">5★</div>
+                    <div class="pricing-stat-label">Client Service</div>
+                </div>
+            </div>
+            <div class="cta-buttons" style="opacity:1;animation:none;">
+                <a href="#" class="cta-btn cta-btn-primary">Explore Inventory</a>
+                <a href="#" class="cta-btn cta-btn-secondary">Contact Sales</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Meet Us In Person ─── -->
+    <section class="locations-section">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">Find Us</p>
+                <h2 class="section-heading">Meet Us In Person</h2>
+                <div class="chrome-line"></div>
+            </div>
+            <div class="locations-grid">
+
+                <div class="location-card">
+                    <div class="location-pin-icon">📍</div>
+                    <h3 class="location-name">Lagos Island</h3>
+                    <p class="location-area-label">Lagos Island, Lagos</p>
+                    <p class="location-address">25 Broad Street,<br>Lagos Island,<br>Lagos State.</p>
+                    <p class="location-hours">⏱ Mon–Fri: 9am–6pm &nbsp;|&nbsp; Sat: 10am–4pm</p>
+                    <a href="https://www.google.com/maps" target="_blank" class="location-map-btn">Open in Maps →</a>
+                </div>
+
+                <div class="location-card">
+                    <div class="location-pin-icon">📍</div>
+                    <h3 class="location-name">Victoria Island</h3>
+                    <p class="location-area-label">Victoria Island, Lagos</p>
+                    <p class="location-address">14 Adeola Odeku Street,<br>Victoria Island,<br>Lagos State.</p>
+                    <p class="location-hours">⏱ Mon–Fri: 9am–6pm &nbsp;|&nbsp; Sat: 10am–4pm</p>
+                    <a href="https://www.google.com/maps" target="_blank" class="location-map-btn">Open in Maps →</a>
+                </div>
+
+                <div class="location-card">
+                    <div class="location-pin-icon">📍</div>
+                    <h3 class="location-name">Abuja</h3>
+                    <p class="location-area-label">Maitama District, Abuja</p>
+                    <p class="location-address">12 Gana Street,<br>Maitama District,<br>Abuja FCT.</p>
+                    <p class="location-hours">⏱ Mon–Fri: 9am–6pm &nbsp;|&nbsp; Sat: 10am–4pm</p>
+                    <a href="https://www.google.com/maps" target="_blank" class="location-map-btn">Open in Maps →</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Footer ─── -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+
+                <div>
+                    <span class="footer-brand-name">CRISPDAL</span>
+                    <span class="footer-brand-sub">AUTOHUB</span>
+                    <p class="footer-brand-desc">Nigeria's premier destination for luxury automobiles. We curate the finest vehicles for those who demand the very best in performance and prestige.</p>
+                    <div class="footer-socials">
+                        <a href="#" class="social-btn" aria-label="Instagram">IG</a>
+                        <a href="#" class="social-btn" aria-label="Facebook">FB</a>
+                        <a href="#" class="social-btn" aria-label="Twitter/X">X</a>
+                        <a href="#" class="social-btn" aria-label="WhatsApp">WA</a>
+                        <a href="#" class="social-btn" aria-label="TikTok">TK</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-col-title">Quick Links</h4>
+                    <ul class="footer-link-list">
+                        <li><a href="#"><span class="f-icon">›</span> Home</a></li>
+                        <li><a href="#"><span class="f-icon">›</span> Inventory</a></li>
+                        <li><a href="#"><span class="f-icon">›</span> New Arrivals</a></li>
+                        <li><a href="#"><span class="f-icon">›</span> Pre-Owned</a></li>
+                        <li><a href="#"><span class="f-icon">›</span> About Us</a></li>
+                        <li><a href="#"><span class="f-icon">›</span> Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-col-title">Contact Us</h4>
+                    <ul class="footer-link-list">
+                        <li><span><span class="f-icon">☎</span> +234 802 000 0000</span></li>
+                        <li><span><span class="f-icon">☎</span> +234 803 000 0000</span></li>
+                        <li><a href="mailto:info@crispdalautohub.com"><span class="f-icon">✉</span> info@crispdalautohub.com</a></li>
+                        <li><a href="mailto:sales@crispdalautohub.com"><span class="f-icon">✉</span> sales@crispdalautohub.com</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-col-title">Showrooms</h4>
+                    <ul class="footer-link-list">
+                        <li><a href="https://www.google.com/maps" target="_blank"><span class="f-icon">◈</span> Lagos Island, Lagos</a></li>
+                        <li><a href="https://www.google.com/maps" target="_blank"><span class="f-icon">◈</span> Victoria Island, Lagos</a></li>
+                        <li><a href="https://www.google.com/maps" target="_blank"><span class="f-icon">◈</span> Maitama, Abuja FCT</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom-bar">
+                <p class="footer-copyright">© 2024 Crispdal Autohub. All rights reserved.</p>
+                <p class="footer-tagline-bottom">Luxury &bull; Performance &bull; Excellence</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
@@ -1352,9 +2179,11 @@
             link.addEventListener('click', () => toggleMenu(false));
         });
 
-        // Scroll glass effect
+        // Scroll glass effect — dark bg only after hero section exits viewport
+        const heroWrapper = document.querySelector('.hero-wrapper');
         window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 40);
+            const heroPast = heroWrapper.getBoundingClientRect().bottom <= 0;
+            navbar.classList.toggle('scrolled', heroPast);
         }, { passive: true });
     </script>
 </body>
