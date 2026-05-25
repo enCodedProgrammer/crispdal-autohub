@@ -168,15 +168,13 @@
             object-fit: cover;
         }
 
-        /* Watermark Cover */
+        /* Watermark Cover — size/position set by JS in render() */
         .watermark-cover {
             position: absolute;
             bottom: 0;
             right: 0;
-            width: 250px;
-            height: 100px;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
-            z-index: 50;
+            background: linear-gradient(to top left, #000 30%, rgba(0,0,0,0.85) 52%, transparent 75%);
+            z-index: 201;
             pointer-events: none;
         }
 
@@ -918,6 +916,12 @@
             /* Hide speed lines on mobile for cleaner look */
             .speed-lines {
                 opacity: 0.2;
+            }
+
+            /* Hide watermark cover until JS reveals it after first scroll */
+            .watermark-cover {
+                opacity: 0;
+                visibility: hidden;
             }
 
             /* Adjust scroll indicator */
@@ -1983,6 +1987,27 @@
             ctx.fillStyle = '#000';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+
+            updateWatermarkCover(offsetX, offsetY, drawWidth, drawHeight, isMobile);
+        }
+
+        // Repositions the watermark cover to always sit over the image's bottom-right corner,
+        // accounting for contain mode and the 80px upward canvas shift on mobile.
+        function updateWatermarkCover(offsetX, offsetY, drawWidth, drawHeight, isMobile) {
+            const cover = document.querySelector('.watermark-cover');
+            if (!cover) return;
+
+            // On mobile the canvas is translated -80px vertically via CSS, so the image's
+            // visual bottom is 80px higher than its canvas-coordinate bottom.
+            const canvasYShift = isMobile ? 80 : 0;
+
+            const coverBottom = Math.max(0, canvas.height + canvasYShift - offsetY - drawHeight);
+            const coverRight  = Math.max(0, canvas.width  - offsetX - drawWidth);
+
+            cover.style.bottom = coverBottom + 'px';
+            cover.style.right  = coverRight  + 'px';
+            cover.style.width  = (drawWidth  * 0.32) + 'px';
+            cover.style.height = (drawHeight * 0.28) + 'px';
         }
 
         // Progressive loading
@@ -2088,38 +2113,82 @@
                 onLeaveBack: () => scrollIndicator.classList.remove('hidden')
             });
 
-            // Fade out hero content and veil
-            gsap.to('.hero-content, .hero-veil', {
-                opacity: 0,
-                scrollTrigger: {
-                    trigger: '.hero-wrapper',
-                    start: 'top top',
-                    end: '12% top',
-                    scrub: 2
-                }
-            });
+            // Hero content/veil: smooth fade on desktop, instant hide on mobile
+            if (window.innerWidth > 768) {
+                gsap.to('.hero-content, .hero-veil', {
+                    opacity: 0,
+                    scrollTrigger: {
+                        trigger: '.hero-wrapper',
+                        start: 'top top',
+                        end: '12% top',
+                        scrub: 2
+                    }
+                });
 
-            gsap.to('.hero-content', {
-                y: -100,
-                scrollTrigger: {
-                    trigger: '.hero-wrapper',
-                    start: 'top top',
-                    end: '15% top',
-                    scrub: 2
-                }
-            });
+                gsap.to('.hero-content', {
+                    y: -100,
+                    scrollTrigger: {
+                        trigger: '.hero-wrapper',
+                        start: 'top top',
+                        end: '15% top',
+                        scrub: 2
+                    }
+                });
+            } else {
+                const heroContent = document.querySelector('.hero-content');
+                const heroVeil    = document.querySelector('.hero-veil');
+                const wmCover     = document.querySelector('.watermark-cover');
+                const stText1     = document.getElementById('storyText1');
+                let heroHidden    = false;
 
-            // Story Text 1: Frames 100-180
-            gsap.timeline({
-                scrollTrigger: {
-                    trigger: '.hero-wrapper',
-                    start: '24% top',
-                    end: '44% top',
-                    scrub: 2
-                }
-            })
-            .fromTo('#storyText1', { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 0.4 })
-            .to('#storyText1', { opacity: 0, y: -120, duration: 0.3 });
+                window.addEventListener('scroll', function () {
+                    if (window.scrollY > 0) {
+                        if (!heroHidden) {
+                            heroHidden = true;
+                            heroContent.style.opacity  = '0';
+                            heroVeil.style.opacity     = '0';
+                            wmCover.style.opacity      = '1';
+                            wmCover.style.visibility   = 'visible';
+                            stText1.style.opacity      = '1';
+                            stText1.style.transform    = 'translateY(0)';
+                        }
+                    } else {
+                        // Back at top — restore hero, hide story text + cover
+                        heroHidden = false;
+                        heroContent.style.opacity  = '1';
+                        heroVeil.style.opacity     = '1';
+                        wmCover.style.opacity      = '0';
+                        wmCover.style.visibility   = 'hidden';
+                        stText1.style.opacity      = '0';
+                        stText1.style.transform    = 'translateY(0)';
+                    }
+                }, { passive: true });
+            }
+
+            // Story Text 1: desktop entry + exit; mobile entry handled by scroll listener above
+            if (window.innerWidth > 768) {
+                gsap.timeline({
+                    scrollTrigger: {
+                        trigger: '.hero-wrapper',
+                        start: '24% top',
+                        end: '44% top',
+                        scrub: 2
+                    }
+                })
+                .fromTo('#storyText1', { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 0.4 })
+                .to('#storyText1', { opacity: 0, y: -120, duration: 0.3 });
+            } else {
+                // Mobile exit only — entry is instant via scroll listener
+                gsap.to('#storyText1', {
+                    opacity: 0, y: -80,
+                    scrollTrigger: {
+                        trigger: '.hero-wrapper',
+                        start: '35% top',
+                        end:   '44% top',
+                        scrub: 2
+                    }
+                });
+            }
 
             // Story Text 2: Frames 220-300
             gsap.timeline({
