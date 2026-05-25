@@ -584,29 +584,85 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            /* Fix canvas rendering to show full image on mobile */
+            #cinematic-canvas {
+                width: 100vw;
+                height: 100vh;
+                object-fit: contain; /* Changed from cover to contain */
+            }
+
+            /* Adjust hero wrapper for mobile */
+            .hero-wrapper {
+                height: 600vh; /* Reduced from 700vh for mobile */
+            }
+
+            /* Center hero content better on mobile */
+            .hero-content-block {
+                width: 90%;
+                padding: 2rem 1.5rem;
+            }
+
+            .hero-content h1 {
+                font-size: clamp(2rem, 12vw, 4rem);
+            }
+
+            .hero-subtitle {
+                font-size: clamp(1rem, 5vw, 1.8rem);
+            }
+
+            .hero-tagline {
+                font-size: clamp(0.75rem, 3.5vw, 1rem);
+            }
+
+            /* Story text mobile positioning */
             .story-text {
                 left: 5% !important;
                 right: 5% !important;
+                top: auto !important;
+                bottom: 15% !important;
+                transform: none !important;
                 text-align: center !important;
+                padding: 1.5rem 2rem;
+                border-left: none;
+                border-bottom: 3px solid var(--red);
             }
 
-            .hero-content-block {
-                width: 100%;
-                padding: 2.5rem 2rem;
+            .story-text h2 {
+                font-size: clamp(1.8rem, 8vw, 3rem);
             }
 
             .story-text p {
                 max-width: 100%;
+                font-size: clamp(0.9rem, 4vw, 1.2rem);
             }
 
+            /* CTA buttons mobile */
             .cta-buttons {
                 flex-direction: column;
                 align-items: center;
+                gap: 1rem;
             }
 
             .cta-btn {
                 width: 100%;
-                max-width: 300px;
+                max-width: 280px;
+                padding: 1.2rem 2.5rem;
+                font-size: 0.8rem;
+            }
+
+            /* Hide speed lines on mobile for cleaner look */
+            .speed-lines {
+                opacity: 0.2;
+            }
+
+            /* Adjust scroll indicator */
+            .scroll-indicator {
+                bottom: 2rem;
+            }
+
+            /* Make chrome lines shorter on mobile */
+            .chrome-line {
+                width: 80px;
             }
         }
     </style>
@@ -740,21 +796,42 @@
             const canvasAspect = canvas.width / canvas.height;
             const imgAspect = img.width / img.height;
             
+            // On mobile, use contain to show full image without cropping
+            const isMobile = window.innerWidth <= 768;
+            
             let drawWidth, drawHeight, offsetX, offsetY;
             
-            if (imgAspect > canvasAspect) {
-                drawHeight = canvas.height;
-                drawWidth = img.width * (canvas.height / img.height);
-                offsetX = (canvas.width - drawWidth) / 2;
-                offsetY = 0;
+            if (isMobile) {
+                // Contain mode - fit entire image in viewport
+                if (imgAspect > canvasAspect) {
+                    drawWidth = canvas.width;
+                    drawHeight = canvas.width / imgAspect;
+                    offsetX = 0;
+                    offsetY = (canvas.height - drawHeight) / 2;
+                } else {
+                    drawHeight = canvas.height;
+                    drawWidth = canvas.height * imgAspect;
+                    offsetX = (canvas.width - drawWidth) / 2;
+                    offsetY = 0;
+                }
             } else {
-                drawWidth = canvas.width;
-                drawHeight = img.height * (canvas.width / img.width);
-                offsetX = 0;
-                offsetY = (canvas.height - drawHeight) / 2;
+                // Desktop: cover mode - fill entire viewport
+                if (imgAspect > canvasAspect) {
+                    drawHeight = canvas.height;
+                    drawWidth = img.width * (canvas.height / img.height);
+                    offsetX = (canvas.width - drawWidth) / 2;
+                    offsetY = 0;
+                } else {
+                    drawWidth = canvas.width;
+                    drawHeight = img.height * (canvas.width / img.width);
+                    offsetX = 0;
+                    offsetY = (canvas.height - drawHeight) / 2;
+                }
             }
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
         }
 
