@@ -582,8 +582,260 @@
             font-weight: 300;
         }
 
-        /* Responsive */
+        /* ── Navigation ── */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 500;
+            padding: 1.4rem 0;
+            transition: background 0.4s ease, padding 0.4s ease, backdrop-filter 0.4s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 0.9rem 0;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Logo */
+        .nav-logo {
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+            gap: 2px;
+        }
+
+        .nav-logo-main {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            background: linear-gradient(135deg, var(--chrome) 0%, var(--gold) 60%, var(--chrome) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: chromeShine 4s linear infinite;
+        }
+
+        .nav-logo-sub {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.55rem;
+            font-weight: 300;
+            letter-spacing: 0.45em;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+
+        /* Desktop links */
+        .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .nav-link {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(232, 232, 232, 0.8);
+            text-decoration: none;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, var(--gold), var(--red));
+            transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .nav-link:hover {
+            color: var(--gold);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link-cta {
+            padding: 0.6rem 1.6rem;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            color: var(--gold) !important;
+            transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease !important;
+        }
+
+        .nav-link-cta::after {
+            display: none;
+        }
+
+        .nav-link-cta:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: #000 !important;
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            z-index: 601;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: var(--chrome);
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                        opacity 0.3s ease,
+                        width 0.3s ease;
+            transform-origin: center;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+            width: 0;
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* Mobile full-screen menu */
+        .mobile-menu {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 5, 5, 0.97);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .mobile-menu.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .mobile-menu::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .mobile-nav-links li {
+            overflow: hidden;
+        }
+
+        .mobile-nav-link {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(2.2rem, 9vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(232, 232, 232, 0.85);
+            text-decoration: none;
+            display: block;
+            transform: translateY(60px);
+            opacity: 0;
+            transition: color 0.3s ease,
+                        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                        opacity 0.55s ease;
+        }
+
+        .mobile-menu.open .mobile-nav-link {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .mobile-menu.open .mobile-nav-links li:nth-child(1) .mobile-nav-link { transition-delay: 0.05s; }
+        .mobile-menu.open .mobile-nav-links li:nth-child(2) .mobile-nav-link { transition-delay: 0.12s; }
+        .mobile-menu.open .mobile-nav-links li:nth-child(3) .mobile-nav-link { transition-delay: 0.19s; }
+        .mobile-menu.open .mobile-nav-links li:nth-child(4) .mobile-nav-link { transition-delay: 0.26s; }
+
+        .mobile-nav-link:hover {
+            background: linear-gradient(135deg, var(--chrome) 0%, var(--gold) 50%, var(--red) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .mobile-menu-footer {
+            position: absolute;
+            bottom: 3rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 300;
+            color: rgba(212, 175, 55, 0.5);
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+        }
+
+        /* ── Responsive ── */
         @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-container {
+                padding: 0 1.4rem;
+            }
+
             /* Fix canvas rendering to show full image on mobile */
             #cinematic-canvas {
                 width: 100vw;
@@ -668,6 +920,40 @@
     </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <span class="nav-logo-main">CRISPDAL</span>
+                <span class="nav-logo-sub">AUTOHUB</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link">Home</a></li>
+                <li><a href="#" class="nav-link">Inventory</a></li>
+                <li><a href="#" class="nav-link">About</a></li>
+                <li><a href="#" class="nav-link nav-link-cta">Contact Us</a></li>
+            </ul>
+
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-nav-links">
+            <li><a href="#" class="mobile-nav-link">Home</a></li>
+            <li><a href="#" class="mobile-nav-link">Inventory</a></li>
+            <li><a href="#" class="mobile-nav-link">About</a></li>
+            <li><a href="#" class="mobile-nav-link">Contact Us</a></li>
+        </ul>
+        <p class="mobile-menu-footer">Luxury &bull; Performance &bull; Excellence</p>
+    </div>
+
     <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-logo">CRISPDAL</div>
@@ -755,7 +1041,7 @@
         gsap.registerPlugin(ScrollTrigger);
 
         // Configuration
-        const frameCount = 411;
+        const frameCount = 397;
         const images = [];
         const imageSeq = { frame: 0 };
 
@@ -997,6 +1283,31 @@
         }
 
         window.addEventListener('resize', resizeCanvas);
+
+        // ── Navigation ──
+        const navbar      = document.getElementById('navbar');
+        const hamburger   = document.getElementById('hamburger');
+        const mobileMenu  = document.getElementById('mobileMenu');
+        const mobileLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+
+        function toggleMenu(open) {
+            hamburger.classList.toggle('open', open);
+            mobileMenu.classList.toggle('open', open);
+            document.body.style.overflow = open ? 'hidden' : '';
+        }
+
+        hamburger.addEventListener('click', () => {
+            toggleMenu(!mobileMenu.classList.contains('open'));
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => toggleMenu(false));
+        });
+
+        // Scroll glass effect
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 40);
+        }, { passive: true });
     </script>
 </body>
 </html>
