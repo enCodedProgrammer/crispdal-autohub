@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crispdal Autohub - Luxury Automobiles</title>
+    <link rel="preload" as="image" href="cinematic-frames/ezgif-frame-406.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- GSAP -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: #000;
+        }
+
+        :root {
+            --chrome: #E8E8E8;
+            --gold: #D4AF37;
+            --red: #DC143C;
+            --black: #0A0A0A;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 1s ease-out;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-logo {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #E8E8E8 0%, #D4AF37 50%, #E8E8E8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+            margin-bottom: 1rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            animation: chromeShine 3s linear infinite;
+        }
+
+        @keyframes chromeShine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .loading-subtitle {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(0.8rem, 2vw, 1.2rem);
+            font-weight: 300;
+            color: var(--gold);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+        }
+
+        .loading-bar-container {
+            width: 400px;
+            max-width: 80vw;
+            height: 4px;
+            background: rgba(232, 232, 232, 0.15);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--red) 0%, var(--gold) 50%, var(--chrome) 100%);
+            background-size: 200% 100%;
+            width: 0%;
+            transition: width 0.3s ease-out;
+            animation: speedBar 2s linear infinite;
+            box-shadow: 0 0 20px var(--red);
+        }
+
+        @keyframes speedBar {
+            0% { background-position: 0% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .loading-text {
+            font-size: 0.75rem;
+            color: rgba(232, 232, 232, 0.6);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        /* Speed Lines Background */
+        .speed-lines {
+            position: fixed;
+            inset: 0;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 100px,
+                    rgba(232, 232, 232, 0.03) 100px,
+                    rgba(232, 232, 232, 0.03) 102px
+                );
+            z-index: 99;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        /* Hero Container */
+        .hero-wrapper {
+            position: relative;
+            height: 700vh;
+            background: #000;
+        }
+
+        .hero-canvas-container {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #cinematic-canvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Watermark Cover */
+        .watermark-cover {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 250px;
+            height: 100px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        /* Vignette */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,0.7) 100%);
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Subtle Grain */
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii45Ii8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iLjA1Ii8+PC9zdmc+');
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 101;
+            mix-blend-mode: overlay;
+        }
+
+        /* Hero veil */
+        .hero-veil {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.6) 100%),
+                url('cinematic-frames/ezgif-frame-001.jpg') center / cover no-repeat;
+            z-index: 199;
+            pointer-events: none;
+        }
+
+        /* Main Hero Text */
+        .hero-content {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            text-align: center;
+            pointer-events: none;
+            padding: 0 5%;
+        }
+
+        .hero-content-block {
+            background: rgba(10, 10, 10, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid rgba(232, 232, 232, 0.15);
+            border-top: 2px solid rgba(212, 175, 55, 0.3);
+            padding: 3.5rem 5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content-block::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            animation: borderSlide 3s linear infinite;
+        }
+
+        @keyframes borderSlide {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .hero-content h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-indent: 0.1em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #E8E8E8 0%, #D4AF37 50%, #E8E8E8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+            text-shadow: 0 0 40px rgba(212, 175, 55, 0.5);
+            line-height: 1;
+            opacity: 0;
+            animation: fadeInUp 2s ease-out 0.5s forwards, chromeShine 4s linear infinite;
+        }
+
+        .hero-subtitle {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 2.5rem);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+            opacity: 0;
+            animation: fadeInUp 2s ease-out 1s forwards;
+            margin-bottom: 2rem;
+        }
+
+        .hero-tagline {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(0.9rem, 2vw, 1.3rem);
+            font-weight: 300;
+            color: rgba(232, 232, 232, 0.9);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeInUp 2s ease-out 1.4s forwards;
+            margin-bottom: 3rem;
+        }
+
+        /* Chrome accent line */
+        .chrome-line {
+            width: 150px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--chrome), transparent);
+            margin: 1.5rem auto;
+            box-shadow: 0 0 10px rgba(232, 232, 232, 0.5);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Story Text Overlays */
+        .story-text {
+            position: absolute;
+            z-index: 200;
+            pointer-events: none;
+            opacity: 0;
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid rgba(232, 232, 232, 0.2);
+            border-left: 3px solid var(--red);
+            padding: 2.5rem 3rem;
+        }
+
+        .story-text h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(2.5rem, 7vw, 6rem);
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--chrome) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        .story-text p {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            font-weight: 300;
+            color: rgba(232, 232, 232, 0.95);
+            line-height: 1.7;
+            max-width: 600px;
+        }
+
+        .text-center {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .text-left {
+            top: 20%;
+            left: 8%;
+            text-align: left;
+        }
+
+        .text-right {
+            top: 30%;
+            right: 8%;
+            text-align: right;
+        }
+
+        .text-bottom-center {
+            bottom: 20%;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: max-content;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        /* CTAs */
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeInUp 2s ease-out 1.8s forwards;
+            pointer-events: all;
+        }
+
+        .cta-btn {
+            padding: 1.4rem 4rem;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 0;
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            cursor: pointer;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            transition: left 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            z-index: -1;
+        }
+
+        .cta-btn:hover::before {
+            left: 0;
+        }
+
+        .cta-btn-primary {
+            background: linear-gradient(135deg, var(--red) 0%, var(--gold) 100%);
+            color: #000;
+            border: 2px solid transparent;
+            box-shadow: 0 0 30px rgba(220, 20, 60, 0.4);
+        }
+
+        .cta-btn-primary::before {
+            background: var(--chrome);
+        }
+
+        .cta-btn-primary:hover {
+            color: #000;
+            box-shadow: 0 0 40px rgba(232, 232, 232, 0.6);
+        }
+
+        .cta-btn-secondary {
+            background: transparent;
+            color: var(--chrome);
+            border: 2px solid var(--chrome);
+        }
+
+        .cta-btn-secondary::before {
+            background: var(--gold);
+        }
+
+        .cta-btn-secondary:hover {
+            color: #000;
+            border-color: var(--gold);
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2.5s forwards;
+            transition: opacity 0.5s;
+        }
+
+        .scroll-indicator.hidden {
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .scroll-text {
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .scroll-arrow {
+            width: 28px;
+            height: 44px;
+            border: 2px solid var(--chrome);
+            border-radius: 14px;
+            position: relative;
+            box-shadow: 0 0 15px rgba(232, 232, 232, 0.3);
+        }
+
+        .scroll-arrow::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 10px;
+            background: var(--gold);
+            border-radius: 2px;
+            animation: scrollDown 2s ease-in-out infinite;
+            box-shadow: 0 0 8px var(--gold);
+        }
+
+        @keyframes scrollDown {
+            0% {
+                top: 10px;
+                opacity: 0;
+            }
+            30% {
+                opacity: 1;
+            }
+            60% {
+                opacity: 1;
+            }
+            100% {
+                top: 28px;
+                opacity: 0;
+            }
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--red) 0%, var(--gold) 50%, var(--chrome) 100%);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+            box-shadow: 0 0 15px rgba(220, 20, 60, 0.8);
+        }
+
+        /* Next Section */
+        .next-section {
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #000 0%, #0f0f0f 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 2rem;
+        }
+
+        .next-section h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(135deg, var(--chrome) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .next-section p {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: rgba(232, 232, 232, 0.8);
+            text-align: center;
+            max-width: 700px;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .story-text {
+                left: 5% !important;
+                right: 5% !important;
+                text-align: center !important;
+            }
+
+            .hero-content-block {
+                width: 100%;
+                padding: 2.5rem 2rem;
+            }
+
+            .story-text p {
+                max-width: 100%;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">CRISPDAL</div>
+        <div class="loading-subtitle">AUTOHUB</div>
+        <div class="loading-bar-container">
+            <div class="loading-bar" id="loadingBar"></div>
+        </div>
+        <div class="loading-text" id="loadingText">LOADING... 0%</div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Speed Lines -->
+    <div class="speed-lines"></div>
+
+    <!-- Grain -->
+    <div class="grain-overlay"></div>
+    
+    <!-- Vignette -->
+    <div class="vignette"></div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator">
+        <span class="scroll-text">Scroll</span>
+        <div class="scroll-arrow"></div>
+    </div>
+
+    <!-- Hero Wrapper -->
+    <div class="hero-wrapper">
+        <div class="hero-canvas-container">
+            <canvas id="cinematic-canvas"></canvas>
+
+            <!-- Watermark Cover -->
+            <div class="watermark-cover"></div>
+
+            <!-- Dark veil -->
+            <div class="hero-veil"></div>
+
+            <!-- Main Hero Content -->
+            <div class="hero-content">
+                <div class="hero-content-block">
+                    <h1>CRISPDAL</h1>
+                    <p class="hero-subtitle">AUTOHUB</p>
+                    <div class="chrome-line"></div>
+                    <p class="hero-tagline">Luxury • Performance • Excellence</p>
+                    <div class="cta-buttons">
+                        <a href="#" class="cta-btn cta-btn-primary">View Inventory</a>
+                        <a href="#" class="cta-btn cta-btn-secondary">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Story Text 1: Frames 100-180 -->
+            <div class="story-text text-left" id="storyText1">
+                <h2>DRIVE THE<br>DREAM</h2>
+                <div class="chrome-line"></div>
+                <p>Premium automobiles for<br>Nigeria's elite</p>
+            </div>
+
+            <!-- Story Text 2: Frames 220-300 -->
+            <div class="story-text text-right" id="storyText2">
+                <h2>PERFORMANCE<br>UNLEASHED</h2>
+                <div class="chrome-line"></div>
+                <p>Where power meets luxury<br>and prestige</p>
+            </div>
+
+            <!-- Story Text 3: Frames 340-411 -->
+            <div class="story-text text-bottom-center" id="storyText3">
+                <h2>YOUR JOURNEY STARTS HERE</h2>
+                <div class="chrome-line"></div>
+                <p>Where passion meets the road</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Next Section -->
+    <div class="next-section">
+        <h2>Featured Collection</h2>
+        <div class="chrome-line"></div>
+        <p>Experience luxury redefined. From Mercedes-Benz to BMW, Range Rover to Lexus – discover automotive excellence.</p>
+    </div>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Configuration
+        const frameCount = 411;
+        const images = [];
+        const imageSeq = { frame: 0 };
+
+        const canvas = document.getElementById('cinematic-canvas');
+        const ctx = canvas.getContext('2d');
+
+        const loadingScreen = document.getElementById('loadingScreen');
+        const loadingBar = document.getElementById('loadingBar');
+        const loadingText = document.getElementById('loadingText');
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        const progressBar = document.getElementById('progressBar');
+
+        // Current frame function - starts at 172
+        const currentFrame = (index) => {
+            return `cinematic-frames/ezgif-frame-${(index + 001).toString().padStart(3, '0')}.jpg`;
+        };
+
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (images.length > 0 && images[0] && images[0].complete) {
+                render();
+            }
+        }
+
+        resizeCanvas();
+
+        // Render function
+        function render() {
+            if (!images[imageSeq.frame] || !images[imageSeq.frame].complete) {
+                return;
+            }
+            
+            const img = images[imageSeq.frame];
+            const canvasAspect = canvas.width / canvas.height;
+            const imgAspect = img.width / img.height;
+            
+            let drawWidth, drawHeight, offsetX, offsetY;
+            
+            if (imgAspect > canvasAspect) {
+                drawHeight = canvas.height;
+                drawWidth = img.width * (canvas.height / img.height);
+                offsetX = (canvas.width - drawWidth) / 2;
+                offsetY = 0;
+            } else {
+                drawWidth = canvas.width;
+                drawHeight = img.height * (canvas.width / img.width);
+                offsetX = 0;
+                offsetY = (canvas.height - drawHeight) / 2;
+            }
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        }
+
+        // Progressive loading
+        let loadedCount = 0;
+        const immediateLoadCount = 40;
+
+        for (let i = 0; i < Math.min(immediateLoadCount, frameCount); i++) {
+            const img = new Image();
+            img.src = currentFrame(i);
+            
+            img.onload = () => {
+                loadedCount++;
+                const progress = Math.round((loadedCount / immediateLoadCount) * 100);
+                loadingBar.style.width = progress + '%';
+                loadingText.textContent = `LOADING... ${progress}%`;
+
+                if (loadedCount === immediateLoadCount) {
+                    setTimeout(() => {
+                        loadingScreen.classList.add('hidden');
+                        render();
+                        initScrollAnimation();
+                        loadRemainingFrames();
+                    }, 500);
+                }
+            };
+
+            img.onerror = () => {
+                loadedCount++;
+                if (loadedCount === immediateLoadCount) {
+                    setTimeout(() => {
+                        loadingScreen.classList.add('hidden');
+                        render();
+                        initScrollAnimation();
+                        loadRemainingFrames();
+                    }, 500);
+                }
+            };
+
+            images.push(img);
+        }
+
+        function loadRemainingFrames() {
+            for (let i = immediateLoadCount; i < frameCount; i++) {
+                const img = new Image();
+                img.src = currentFrame(i);
+                images.push(img);
+            }
+        }
+
+        function initScrollAnimation() {
+            const lenis = new Lenis({
+                duration: 2.8,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                smooth: true,
+                smoothTouch: false,
+                touchMultiplier: 1.2
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => lenis.raf(time * 1000));
+            gsap.ticker.lagSmoothing(0);
+
+            // Frame animation — last frames get more time to linger
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: '.hero-wrapper',
+                    start: 'top top',
+                    end: '80% top',
+                    scrub: 2,
+                    onUpdate: (self) => {
+                        render();
+                        progressBar.style.width = (self.progress * 100) + '%';
+                    }
+                }
+            })
+            .to(imageSeq, { frame: 340, snap: 'frame', ease: 'none', duration: 7 })
+            .to(imageSeq, { frame: frameCount - 1, snap: 'frame', ease: 'none', duration: 3 });
+
+            // Hold the last frame
+            ScrollTrigger.create({
+                trigger: '.hero-wrapper',
+                start: '80% top',
+                end: 'bottom top',
+                onEnter: () => {
+                    imageSeq.frame = frameCount - 1;
+                    render();
+                },
+                onUpdate: () => render()
+            });
+
+            // Hide scroll indicator
+            ScrollTrigger.create({
+                trigger: '.hero-wrapper',
+                start: 'top top',
+                end: '5% top',
+                onEnter: () => scrollIndicator.classList.add('hidden'),
+                onLeaveBack: () => scrollIndicator.classList.remove('hidden')
+            });
+
+            // Fade out hero content and veil
+            gsap.to('.hero-content, .hero-veil', {
+                opacity: 0,
+                scrollTrigger: {
+                    trigger: '.hero-wrapper',
+                    start: 'top top',
+                    end: '12% top',
+                    scrub: 2
+                }
+            });
+
+            gsap.to('.hero-content', {
+                y: -100,
+                scrollTrigger: {
+                    trigger: '.hero-wrapper',
+                    start: 'top top',
+                    end: '15% top',
+                    scrub: 2
+                }
+            });
+
+            // Story Text 1: Frames 100-180
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: '.hero-wrapper',
+                    start: '24% top',
+                    end: '44% top',
+                    scrub: 2
+                }
+            })
+            .fromTo('#storyText1', { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 0.4 })
+            .to('#storyText1', { opacity: 0, y: -120, duration: 0.3 });
+
+            // Story Text 2: Frames 220-300
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: '.hero-wrapper',
+                    start: '53% top',
+                    end: '73% top',
+                    scrub: 2
+                }
+            })
+            .fromTo('#storyText2', { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 0.4 })
+            .to('#storyText2', { opacity: 0, y: -120, duration: 0.3 });
+
+            // Story Text 3: Frames 340-411
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: '.hero-wrapper',
+                    start: '78% top',
+                    end: '92% top',
+                    scrub: 2
+                }
+            })
+            .fromTo('#storyText3', { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 0.4 })
+            .to('#storyText3', { opacity: 0, y: -120, duration: 0.3 });
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+    </script>
+</body>
+</html>
